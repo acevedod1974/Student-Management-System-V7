@@ -246,7 +246,25 @@ export const useCourseStore = create<CourseStore>()(
         studentId: string,
         metrics: { attendance: number; participation: number }
       ) => {
-        // implementation of the method
+        set((state) => ({
+          courses: state.courses.map((course) => {
+            if (course.id === courseId) {
+              return {
+                ...course,
+                students: course.students.map((student) => {
+                  if (student.id === studentId) {
+                    return {
+                      ...student,
+                      performanceMetrics: metrics,
+                    };
+                  }
+                  return student;
+                }),
+              };
+            }
+            return course;
+          }),
+        }));
       },
     }),
     {
