@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Save } from 'lucide-react';
-import { useCourseStore } from '../store/useCourseStore';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import { Save } from "lucide-react";
+import { useCourseStore } from "../store/useCourseStore";
+import toast from "react-hot-toast";
 
 interface PerformanceMetricsEditorProps {
   courseId: string;
@@ -10,25 +10,34 @@ interface PerformanceMetricsEditorProps {
     attendance: number;
     participation: number;
   };
+  onClose: () => void; // Add this line
 }
 
-export const PerformanceMetricsEditor: React.FC<PerformanceMetricsEditorProps> = ({
+export const PerformanceMetricsEditor: React.FC<
+  PerformanceMetricsEditorProps
+> = ({
   courseId,
   studentId,
-  currentMetrics
+  currentMetrics,
+  onClose, // Add this line
 }) => {
   const [metrics, setMetrics] = useState(currentMetrics);
   const { updatePerformanceMetrics } = useCourseStore();
 
   const handleSave = () => {
-    if (metrics.attendance < 0 || metrics.attendance > 100 ||
-        metrics.participation < 0 || metrics.participation > 100) {
-      toast.error('Los valores deben estar entre 0 y 100');
+    if (
+      metrics.attendance < 0 ||
+      metrics.attendance > 100 ||
+      metrics.participation < 0 ||
+      metrics.participation > 100
+    ) {
+      toast.error("Los valores deben estar entre 0 y 100");
       return;
     }
 
     updatePerformanceMetrics(courseId, studentId, metrics);
-    toast.success('Métricas actualizadas exitosamente');
+    toast.success("Métricas actualizadas exitosamente");
+    onClose(); // Call onClose after saving
   };
 
   return (
@@ -42,7 +51,9 @@ export const PerformanceMetricsEditor: React.FC<PerformanceMetricsEditorProps> =
           min="0"
           max="100"
           value={metrics.attendance}
-          onChange={(e) => setMetrics({ ...metrics, attendance: Number(e.target.value) })}
+          onChange={(e) =>
+            setMetrics({ ...metrics, attendance: Number(e.target.value) })
+          }
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
@@ -56,7 +67,9 @@ export const PerformanceMetricsEditor: React.FC<PerformanceMetricsEditorProps> =
           min="0"
           max="100"
           value={metrics.participation}
-          onChange={(e) => setMetrics({ ...metrics, participation: Number(e.target.value) })}
+          onChange={(e) =>
+            setMetrics({ ...metrics, participation: Number(e.target.value) })
+          }
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>

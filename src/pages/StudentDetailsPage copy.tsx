@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import {
@@ -21,23 +21,11 @@ import {
 } from "recharts";
 import { useCourseStore } from "../store/useCourseStore";
 import { useAuthStore } from "../store/useAuthStore";
-import { PerformanceMetricsEditor } from "../components/PerformanceMetricsEditor"; // Import the editor
-
-type PerformanceMetricsEditorProps = {
-  courseId: string;
-  studentId: string;
-  currentMetrics: {
-    attendance: number;
-    participation: number;
-  };
-  onClose: () => void;
-};
 
 export const StudentDetailsPage: React.FC = () => {
   const { courseId, studentId } = useParams();
   const courses = useCourseStore((state) => state.courses);
   const { user } = useAuthStore();
-  const [showMetricsEditor, setShowMetricsEditor] = useState(false); // State for showing the editor
 
   const course = courses.find((c) => c.id === courseId);
   type Student = {
@@ -285,24 +273,6 @@ export const StudentDetailsPage: React.FC = () => {
           </ResponsiveContainer>
         </div>
       </div>
-
-      <button
-        onClick={() => setShowMetricsEditor(true)}
-        className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-      >
-        Editar Métricas de Rendimiento
-      </button>
-
-      {showMetricsEditor && (
-        <PerformanceMetricsEditor
-          courseId={course.id}
-          studentId={student.id}
-          currentMetrics={
-            student.performanceMetrics || { attendance: 0, participation: 0 }
-          }
-          onClose={() => setShowMetricsEditor(false)}
-        />
-      )}
     </div>
   );
 };
