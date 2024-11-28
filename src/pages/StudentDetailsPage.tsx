@@ -1,6 +1,6 @@
-import React from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import React from "react";
+import { useParams, Navigate, Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -17,34 +17,47 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   Radar,
-  Cell
-} from 'recharts';
-import { useCourseStore } from '../store/useCourseStore';
-import { useAuthStore } from '../store/useAuthStore';
+  Cell,
+} from "recharts";
+import { useCourseStore } from "../store/useCourseStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 export const StudentDetailsPage: React.FC = () => {
   const { courseId, studentId } = useParams();
   const courses = useCourseStore((state) => state.courses);
   const { user } = useAuthStore();
-  
+
   const course = courses.find((c) => c.id === courseId);
-  const student = course?.students.find((s) => s.id === studentId);
+  type Student = {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    grades: { examName: string; score: number }[];
+    finalGrade: number;
+    performanceMetrics?: {
+      attendance: number;
+      participation: number;
+    };
+  };
+
+  const student: Student | undefined = course?.students.find(
+    (s) => s.id === studentId
+  );
 
   if (!course || !student) {
     return <Navigate to="/" replace />;
   }
 
   // Check if the logged-in student is trying to access their own grades
-  if (user?.role === 'student' && user.email !== student.email) {
+  if (user?.role === "student" && user.email !== student.email) {
     return <Navigate to="/" replace />;
   }
 
   const data = student.grades.map((grade, index) => {
     const examAverage =
-      course.students.reduce(
-        (acc, s) => acc + s.grades[index].score,
-        0
-      ) / course.students.length;
+      course.students.reduce((acc, s) => acc + s.grades[index].score, 0) /
+      course.students.length;
 
     return {
       name: grade.examName,
@@ -54,46 +67,50 @@ export const StudentDetailsPage: React.FC = () => {
   });
 
   // Calculate class ranking data
-  const rankingData = course.students.map(s => ({
-    name: `${s.firstName} ${s.lastName}`,
-    puntaje: s.finalGrade,
-    isCurrentStudent: s.id === student.id
-  })).sort((a, b) => b.puntaje - a.puntaje);
+  const rankingData = course.students
+    .map((s) => ({
+      name: `${s.firstName} ${s.lastName}`,
+      puntaje: s.finalGrade,
+      isCurrentStudent: s.id === student.id,
+    }))
+    .sort((a, b) => b.puntaje - a.puntaje);
 
   // Calculate performance metrics for radar chart
   const performanceData = [
     {
-      subject: 'Promedio',
-      score: (student.grades.reduce((acc, grade) => acc + grade.score, 0) / student.grades.length),
-      fullMark: 100
+      subject: "Promedio",
+      score:
+        student.grades.reduce((acc, grade) => acc + grade.score, 0) /
+        student.grades.length,
+      fullMark: 100,
     },
     {
-      subject: 'Máxima Nota',
-      score: Math.max(...student.grades.map(g => g.score)),
-      fullMark: 100
+      subject: "Máxima Nota",
+      score: Math.max(...student.grades.map((g) => g.score)),
+      fullMark: 100,
     },
     {
-      subject: 'Mínima Nota',
-      score: Math.min(...student.grades.map(g => g.score)),
-      fullMark: 100
+      subject: "Mínima Nota",
+      score: Math.min(...student.grades.map((g) => g.score)),
+      fullMark: 100,
     },
     {
-      subject: 'Asistencia',
+      subject: "Asistencia",
       score: student.performanceMetrics?.attendance || 0,
-      fullMark: 100
+      fullMark: 100,
     },
     {
-      subject: 'Participación',
+      subject: "Participación",
       score: student.performanceMetrics?.participation || 0,
-      fullMark: 100
-    }
+      fullMark: 100,
+    },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4 mb-6">
         <Link
-          to={user?.role === 'teacher' ? `/course/${courseId}` : '/'}
+          to={user?.role === "teacher" ? `/course/${courseId}` : "/"}
           className="p-2 hover:bg-gray-100 rounded-full transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -109,9 +126,11 @@ export const StudentDetailsPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white p-6 rounded-lg shadow">
           <p className="text-sm text-gray-600">Total de Puntos</p>
-          <p className={`text-3xl font-bold ${
-            student.finalGrade >= 250 ? 'text-green-600' : 'text-red-600'
-          }`}>
+          <p
+            className={`text-3xl font-bold ${
+              student.finalGrade >= 250 ? "text-green-600" : "text-red-600"
+            }`}
+          >
             {student.finalGrade}
           </p>
         </div>
@@ -127,30 +146,41 @@ export const StudentDetailsPage: React.FC = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold mb-4">Calificaciones por Examen</h3>
+        <h3 className="text-lg font-semibold mb-4">
+          Calificaciones por Examen
+        </h3>
         <div className="overflow-x-auto">
           <div className="flex gap-4 pb-4">
             {data.map((exam) => (
-              <div key={exam.name} className="min-w-[200px] bg-gray-50 p-4 rounded-lg">
+              <div
+                key={exam.name}
+                className="min-w-[200px] bg-gray-50 p-4 rounded-lg"
+              >
                 <h4 className="font-medium text-gray-900 mb-2">{exam.name}</h4>
                 <div className="space-y-2">
                   <div>
                     <p className="text-sm text-gray-600">Calificación</p>
-                    <p className="text-xl font-bold text-blue-600">{exam.calificacion}</p>
+                    <p className="text-xl font-bold text-blue-600">
+                      {exam.calificacion}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Promedio del Curso</p>
-                    <p className="text-lg text-gray-900">{exam.promedioCurso}</p>
+                    <p className="text-lg text-gray-900">
+                      {exam.promedioCurso}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Diferencia</p>
-                    <p className={`text-lg font-medium ${
-                      exam.calificacion > exam.promedioCurso
-                        ? 'text-green-600'
-                        : exam.calificacion < exam.promedioCurso
-                        ? 'text-red-600'
-                        : 'text-gray-600'
-                    }`}>
+                    <p
+                      className={`text-lg font-medium ${
+                        exam.calificacion > exam.promedioCurso
+                          ? "text-green-600"
+                          : exam.calificacion < exam.promedioCurso
+                          ? "text-red-600"
+                          : "text-gray-600"
+                      }`}
+                    >
                       {(exam.calificacion - exam.promedioCurso).toFixed(1)}
                     </p>
                   </div>
@@ -194,10 +224,17 @@ export const StudentDetailsPage: React.FC = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold mb-4">Análisis de Rendimiento</h3>
+          <h3 className="text-lg font-semibold mb-4">
+            Análisis de Rendimiento
+          </h3>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={performanceData}>
+              <RadarChart
+                cx="50%"
+                cy="50%"
+                outerRadius="80%"
+                data={performanceData}
+              >
                 <PolarGrid />
                 <PolarAngleAxis dataKey="subject" />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} />
@@ -228,7 +265,7 @@ export const StudentDetailsPage: React.FC = () => {
                 {rankingData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={entry.isCurrentStudent ? '#3b82f6' : '#94a3b8'}
+                    fill={entry.isCurrentStudent ? "#3b82f6" : "#94a3b8"}
                   />
                 ))}
               </Bar>
