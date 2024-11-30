@@ -1,13 +1,12 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { Navigation } from './components/Navigation';
-import { Dashboard } from './pages/Dashboard';
-import { CoursePage } from './pages/CoursePage';
-import { StudentDetailsPage } from './pages/StudentDetailsPage';
-import { LoginPage } from './components/LoginPage';
-import { PrivateRoute } from './components/PrivateRoute';
-import { useAuthStore } from './store/useAuthStore';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { Navigation } from "./components/Navigation";
+import { Dashboard } from "./pages/Dashboard";
+import { CoursePage } from "./pages/CoursePage";
+import { StudentDetailsPage } from "./pages/StudentDetailsPage";
+import { LoginPage } from "./components/LoginPage";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { useAuthStore } from "./store/useAuthStore";
 
 function App() {
   const { user } = useAuthStore();
@@ -30,7 +29,7 @@ function App() {
             <Route
               path="/course/:courseId"
               element={
-                <PrivateRoute allowedRoles={['teacher']}>
+                <PrivateRoute allowedRoles={["teacher"]}>
                   <CoursePage />
                 </PrivateRoute>
               }
