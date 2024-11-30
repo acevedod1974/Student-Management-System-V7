@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
-import { Download, Upload, Save, Database } from 'lucide-react';
-import { useCourseStore } from '../store/useCourseStore';
-import { useAuthStore } from '../store/useAuthStore';
-import toast from 'react-hot-toast';
+import React, { useRef } from "react";
+import { Save, Database } from "lucide-react";
+import { useCourseStore } from "../store/useCourseStore";
+import { useAuthStore } from "../store/useAuthStore";
+import toast from "react-hot-toast";
 
 export const DataManagement: React.FC = () => {
   const { exportData, importData } = useCourseStore();
@@ -14,20 +14,24 @@ export const DataManagement: React.FC = () => {
     const fullBackup = {
       courses: JSON.parse(courseData),
       studentPasswords,
-      version: '1.0',
-      timestamp: new Date().toISOString()
+      version: "1.0",
+      timestamp: new Date().toISOString(),
     };
 
-    const blob = new Blob([JSON.stringify(fullBackup, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(fullBackup, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `sistema-calificaciones-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `sistema-calificaciones-backup-${
+      new Date().toISOString().split("T")[0]
+    }.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast.success('Backup exportado exitosamente');
+    toast.success("Backup exportado exitosamente");
   };
 
   const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,25 +42,27 @@ export const DataManagement: React.FC = () => {
         try {
           const content = e.target?.result as string;
           const backup = JSON.parse(content);
-          
+
           // Validate backup format
           if (!backup.courses || !backup.studentPasswords || !backup.version) {
-            throw new Error('Formato de backup inválido');
+            throw new Error("Formato de backup inválido");
           }
 
           // Import course data
           importData(JSON.stringify(backup.courses));
-          
+
           // Import student passwords (you'll need to add this to useAuthStore)
           if (backup.studentPasswords) {
             // Update the store with the imported passwords
-            useAuthStore.setState({ studentPasswords: backup.studentPasswords });
+            useAuthStore.setState({
+              studentPasswords: backup.studentPasswords,
+            });
           }
 
-          toast.success('Datos restaurados exitosamente');
+          toast.success("Datos restaurados exitosamente");
         } catch (error) {
-          console.error('Error importing backup:', error);
-          toast.error('Error al importar el backup');
+          console.error("Error importing backup:", error);
+          toast.error("Error al importar el backup");
         }
       };
       reader.readAsText(file);

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { CourseCard } from '../components/CourseCard';
-import { CourseOverviewChart } from '../components/CourseOverviewChart';
-import { useCourseStore } from '../store/useCourseStore';
-import { useAuthStore } from '../store/useAuthStore';
-import { ChangePasswordModal } from '../components/ChangePasswordModal';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { CourseCard } from "../components/CourseCard";
+import { CourseOverviewChart } from "../components/CourseOverviewChart";
+import { useCourseStore } from "../store/useCourseStore";
+import { useAuthStore } from "../store/useAuthStore";
+import { ChangePasswordModal } from "../components/ChangePasswordModal";
 import {
   BarChart,
   Bar,
@@ -15,33 +15,35 @@ import {
   Legend,
   ResponsiveContainer,
   LineChart,
-  Line
-} from 'recharts';
+  Line,
+} from "recharts";
 
 export const Dashboard: React.FC = () => {
   const courses = useCourseStore((state) => state.courses);
   const { user } = useAuthStore();
   const [showChangePassword, setShowChangePassword] = useState(false);
 
-  if (user?.role === 'student') {
-    const studentCourses = courses.filter(course =>
-      course.students.some(student => student.email === user.email)
+  if (user?.role === "student") {
+    const studentCourses = courses.filter((course) =>
+      course.students.some((student) => student.email === user.email)
     );
 
-    const gradeData = studentCourses.map(course => {
-      const student = course.students.find(s => s.email === user.email)!;
+    const gradeData = studentCourses.map((course) => {
+      const student = course.students.find((s) => s.email === user.email)!;
       return {
         name: course.name,
         puntaje: student.finalGrade,
-        promedio: course.students.reduce((acc, s) => acc + s.finalGrade, 0) / course.students.length
+        promedio:
+          course.students.reduce((acc, s) => acc + s.finalGrade, 0) /
+          course.students.length,
       };
     });
 
-    const examProgressData = studentCourses.flatMap(course => {
-      const student = course.students.find(s => s.email === user.email)!;
-      return student.grades.map((grade, index) => ({
+    const examProgressData = studentCourses.flatMap((course) => {
+      const student = course.students.find((s) => s.email === user.email)!;
+      return student.grades.map((grade) => ({
         name: `${course.name} - ${grade.examName}`,
-        calificacion: grade.score
+        calificacion: grade.score,
       }));
     });
 
@@ -56,12 +58,17 @@ export const Dashboard: React.FC = () => {
             Cambiar Contraseña
           </button>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {studentCourses.map((course) => {
-            const student = course.students.find(s => s.email === user.email)!;
+            const student = course.students.find(
+              (s) => s.email === user.email
+            )!;
             return (
-              <Link key={course.id} to={`/course/${course.id}/student/${student.id}`}>
+              <Link
+                key={course.id}
+                to={`/course/${course.id}/student/${student.id}`}
+              >
                 <CourseCard
                   course={course}
                   isSelected={false}
@@ -76,7 +83,9 @@ export const Dashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Comparación de Puntajes</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              Comparación de Puntajes
+            </h2>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={gradeData}>
@@ -86,7 +95,11 @@ export const Dashboard: React.FC = () => {
                   <Tooltip />
                   <Legend />
                   <Bar dataKey="puntaje" name="Tu Puntaje" fill="#3b82f6" />
-                  <Bar dataKey="promedio" name="Promedio del Curso" fill="#10b981" />
+                  <Bar
+                    dataKey="promedio"
+                    name="Promedio del Curso"
+                    fill="#10b981"
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -126,15 +139,11 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-bold text-gray-900">Vista General</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {courses.map((course) => (
           <Link key={course.id} to={`/course/${course.id}`}>
-            <CourseCard
-              course={course}
-              isSelected={false}
-              onClick={() => {}}
-            />
+            <CourseCard course={course} isSelected={false} onClick={() => {}} />
           </Link>
         ))}
       </div>

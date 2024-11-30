@@ -89,7 +89,7 @@ export const useCourseStore = create<CourseStore>()(
           const course = state.courses.find((c) => c.id === courseId);
           if (!course) return state;
 
-          const grades = course.exams.map((exam, index) => ({
+          const grades = course.exams.map((exam) => ({
             id: `grade-${crypto.randomUUID()}`,
             examName: exam,
             score: 0,
