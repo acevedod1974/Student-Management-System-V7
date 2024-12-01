@@ -1,6 +1,6 @@
 // FILE: src/pages/StudentDetailsPage.test.tsx
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useCourseStore } from "../store/useCourseStore";
 import { useAuthStore } from "../store/useAuthStore";
