@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="4" errors="0" time="10.181">
-  <testsuite name="StudentDetailsPage" errors="0" failures="4" skipped="0" timestamp="2024-12-01T03:59:46" time="5.709" tests="4">
-    <testcase classname="StudentDetailsPage renders student details correctly" name="StudentDetailsPage renders student details correctly" time="0.149">
+<testsuites name="jest tests" tests="4" failures="4" errors="0" time="9.662">
+  <testsuite name="StudentDetailsPage" errors="0" failures="4" skipped="0" timestamp="2024-12-01T03:56:17" time="5.515" tests="4">
+    <testcase classname="StudentDetailsPage renders student details correctly" name="StudentDetailsPage renders student details correctly" time="0.16">
       <failure>TypeError: courses.find is not a function
     at StudentDetailsPage (C:\laragon\www\project7\src\pages\StudentDetailsPage.tsx:54:26)
     at renderWithHooks (C:\laragon\www\project7\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
@@ -33,7 +33,7 @@
     at runTestInternal (C:\laragon\www\project7\node_modules\jest-runner\build\runTest.js:367:16)
     at runTest (C:\laragon\www\project7\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="StudentDetailsPage shows performance metrics editor button for teachers" name="StudentDetailsPage shows performance metrics editor button for teachers" time="0.023">
+    <testcase classname="StudentDetailsPage shows performance metrics editor button for teachers" name="StudentDetailsPage shows performance metrics editor button for teachers" time="0.036">
       <failure>TypeError: courses.find is not a function
     at StudentDetailsPage (C:\laragon\www\project7\src\pages\StudentDetailsPage.tsx:54:26)
     at renderWithHooks (C:\laragon\www\project7\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
@@ -65,7 +65,7 @@
     at runTestInternal (C:\laragon\www\project7\node_modules\jest-runner\build\runTest.js:367:16)
     at runTest (C:\laragon\www\project7\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="StudentDetailsPage does not show performance metrics editor button for students" name="StudentDetailsPage does not show performance metrics editor button for students" time="0.03">
+    <testcase classname="StudentDetailsPage does not show performance metrics editor button for students" name="StudentDetailsPage does not show performance metrics editor button for students" time="0.026">
       <failure>TypeError: courses.find is not a function
     at StudentDetailsPage (C:\laragon\www\project7\src\pages\StudentDetailsPage.tsx:54:26)
     at renderWithHooks (C:\laragon\www\project7\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
@@ -97,7 +97,7 @@
     at runTestInternal (C:\laragon\www\project7\node_modules\jest-runner\build\runTest.js:367:16)
     at runTest (C:\laragon\www\project7\node_modules\jest-runner\build\runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="StudentDetailsPage renders charts correctly" name="StudentDetailsPage renders charts correctly" time="0.024">
+    <testcase classname="StudentDetailsPage renders charts correctly" name="StudentDetailsPage renders charts correctly" time="0.027">
       <failure>TypeError: courses.find is not a function
     at StudentDetailsPage (C:\laragon\www\project7\src\pages\StudentDetailsPage.tsx:54:26)
     at renderWithHooks (C:\laragon\www\project7\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
