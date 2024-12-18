@@ -1,10 +1,10 @@
 /**
- *
+ * 
  * Student Management System
- *
+ * 
  * Description: The Student Management System is a comprehensive web application designed to manage student data efficiently.
  * Built with modern web technologies, this system offers a robust and user-friendly interface for managing courses, students, and their performance.
- *
+ * 
  * Technologies Used:
  * - React
  * - TypeScript
@@ -25,14 +25,13 @@ import { Save, Database } from "lucide-react";
 import { useCourseStore } from "../store/useCourseStore";
 import { useAuthStore } from "../store/useAuthStore";
 import toast from "react-hot-toast";
-import { supabase } from "../utils/supabaseClient";
 
 export const DataManagement: React.FC = () => {
   const { exportData, importData } = useCourseStore();
   const { studentPasswords } = useAuthStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleExport = async () => {
+  const handleExport = () => {
     const courseData = exportData();
     const fullBackup = {
       courses: JSON.parse(courseData),
@@ -41,24 +40,6 @@ export const DataManagement: React.FC = () => {
       timestamp: new Date().toISOString(),
     };
 
-    // Save to Supabase
-    const { error } = await supabase
-      .from("backups")
-      .insert([{ backup_data: fullBackup }]);
-
-    if (error) {
-      console.error(
-        "Error exporting backup to Supabase:",
-        error.message,
-        error.details,
-        error.hint
-      );
-      toast.error("Error al exportar el backup a Supabase");
-    } else {
-      toast.success("Backup exportado a Supabase exitosamente");
-    }
-
-    // Save to local file
     const blob = new Blob([JSON.stringify(fullBackup, null, 2)], {
       type: "application/json",
     });
