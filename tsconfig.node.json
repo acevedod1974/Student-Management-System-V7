@@ -8,9 +8,9 @@
     /* Bundler mode */
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": false,
     "esModuleInterop": true,
 
     /* Linting */
@@ -18,6 +18,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    /* Project References */
     "composite": true
   },
   "include": ["vite.config.ts"]
