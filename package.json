@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest",
-    "test:log": "jest --outputFile=test-results.log --json"
+    "start": "vite",
+    "serve": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.8",
